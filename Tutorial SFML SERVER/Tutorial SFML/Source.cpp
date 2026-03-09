@@ -12,7 +12,7 @@ void main()
 
 	bool closeServer = false;
 
-	listener.setBlocking(false);
+	//listener.setBlocking(false);
 
 	if (listener.listen(LISTENER_PORT) != sf::Socket::Status::Done)
 	{
