@@ -1,21 +1,37 @@
-#include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
+#include <iostream>
+#include <string>
+
+#define LISTENER_PORT 55000
 
 void main()
 {
-    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+	sf::TcpListener listener;
 
-    while (window.isOpen())
-    {
-        while (const std::optional event = window.pollEvent())
-        {
-            if (event->is<sf::Event::Closed>())
-                window.close();
-        }
+	sf::TcpSocket client;
 
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
+	bool closeServer = false;
+
+	listener.setBlocking(false);
+
+	if (listener.listen(LISTENER_PORT) != sf::Socket::Status::Done)
+	{
+		std::cerr << "Error al intentar escuchar en el puerto " << LISTENER_PORT << std::endl;
+	}
+
+	while (!closeServer)
+	{
+		std::cout << "Esperando Conexion..." << std::endl;
+		if (listener.accept(client) == sf::Socket::Status::Done)
+		{
+			std::cout << "Cliente conectado desde " << client.getRemoteAddress().value() << std::endl;
+		}
+		else
+		{
+			std::cerr << "Error al aceptar la conexion" << std::endl;
+		}
+	}
+	
+
+
 }
