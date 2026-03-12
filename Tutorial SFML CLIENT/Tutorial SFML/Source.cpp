@@ -16,5 +16,19 @@ void main()
 	else
 	{
 		std::cout << "Conectado con el servidor " << std::endl;
+
+		sf::Packet packet; //Un paquete para enviar y otro para recibir es decir uno para el server y otro para el cliente
+
+		if (socket.receive(packet) == sf::Socket::Status::Done)
+		{
+			std::string receivedMessage;
+			packet >> receivedMessage;
+
+			std::cout << "Mensaje recibido del servidor: " << receivedMessage << std::endl;
+		}
+		else
+		{
+			std::cerr << "Error al recibir el mensaje del servidor" << std::endl;
+		}
 	}
 }
